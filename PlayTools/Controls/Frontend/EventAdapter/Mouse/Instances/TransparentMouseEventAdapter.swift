@@ -15,11 +15,11 @@ public class TransparentMouseEventAdapter: MouseEventAdapter {
         false
     }
 
-    public func handleMove(deltaX: CGFloat, deltaY: CGFloat) -> Bool {
+    public func handleMove(id: Int, loc: CGPoint, deltaX: CGFloat, deltaY: CGFloat) -> Bool {
         false
     }
 
-    public func handleLeftButton(pressed: Bool) -> Bool {
+    public func handleLeftButton(id: Int, loc: CGPoint, pressed: Bool) -> Bool {
         false
     }
 

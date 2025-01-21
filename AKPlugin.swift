@@ -10,6 +10,7 @@ import CoreGraphics
 import Foundation
 
 class AKPlugin: NSObject, Plugin {
+    
     required override init() {
     }
 
@@ -124,10 +125,10 @@ class AKPlugin: NSObject, Plugin {
         })
     }
 
-    func setupMouseMoved(_ mouseMoved: @escaping (CGFloat, CGFloat) -> Bool) {
+    func setupMouseMoved(_ mouseMoved: @escaping (Int, CGPoint, CGFloat, CGFloat) -> Bool) {
         let mask: NSEvent.EventTypeMask = [.leftMouseDragged, .otherMouseDragged, .rightMouseDragged]
         NSEvent.addLocalMonitorForEvents(matching: mask, handler: { event in
-            let consumed = mouseMoved(event.deltaX, event.deltaY)
+            let consumed = mouseMoved(event.buttonNumber, event.locationInWindow, event.deltaX, event.deltaY)
             if consumed {
                 return nil
             }
@@ -135,26 +136,35 @@ class AKPlugin: NSObject, Plugin {
         })
         // transpass mouse moved event when no button pressed, for traffic light button to light up
         NSEvent.addLocalMonitorForEvents(matching: .mouseMoved, handler: { event in
-            _ = mouseMoved(event.deltaX, event.deltaY)
+            _ = mouseMoved(event.buttonNumber, event.locationInWindow, event.deltaX, event.deltaY)
             return event
         })
     }
 
-    func setupMouseButton(left: Bool, right: Bool, _ consumed: @escaping (Int, Bool) -> Bool) {
+    func setupMouseButton(left: Bool, right: Bool, _ consumed: @escaping (Int, CGPoint, Bool) -> Bool) {
         let downType: NSEvent.EventTypeMask = left ? .leftMouseDown : right ? .rightMouseDown : .otherMouseDown
         let upType: NSEvent.EventTypeMask = left ? .leftMouseUp : right ? .rightMouseUp : .otherMouseUp
         NSEvent.addLocalMonitorForEvents(matching: downType, handler: { event in
+            
+            print("---- NSEvent.addLocalMonitorForEvents begin ----")
+            // print event
+            print("Event type: \(event.type)")
+            print("Event timestamp: \(event.timestamp)")
+            print("Event location: \(event.locationInWindow)")
+            print("Event modifier flags: \(event.modifierFlags)")
+            print("---- NSEvent.addLocalMonitorForEvents end ----")
+            
             // For traffic light buttons when fullscreen
             if event.window != NSApplication.shared.windows.first! {
                 return event
             }
-            if consumed(event.buttonNumber, true) {
+            if consumed(event.buttonNumber, event.locationInWindow, true) {
                 return nil
             }
             return event
         })
         NSEvent.addLocalMonitorForEvents(matching: upType, handler: { event in
-            if consumed(event.buttonNumber, false) {
+            if consumed(event.buttonNumber, event.locationInWindow, false) {
                 return nil
             }
             return event

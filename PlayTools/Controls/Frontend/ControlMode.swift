@@ -75,15 +75,15 @@ public class ControlMode: Equatable {
         // Mouse polling rate as high as 1000 causes issue to some games
         setupMouseMoved(maxPollingRate: 125)
 
-        AKInterface.shared!.setupMouseButton(left: true, right: false, {_, pressed in
-            self.mouseAdapter.handleLeftButton(pressed: pressed)
+        AKInterface.shared!.setupMouseButton(left: true, right: false, {id, loc, pressed in
+            self.mouseAdapter.handleLeftButton(id: id, loc: loc, pressed: pressed)
         })
 
-        AKInterface.shared!.setupMouseButton(left: false, right: false, {id, pressed in
+        AKInterface.shared!.setupMouseButton(left: false, right: false, {id, loc, pressed in
             self.mouseAdapter.handleOtherButton(id: id, pressed: pressed)
         })
 
-        AKInterface.shared!.setupMouseButton(left: false, right: true, {id, pressed in
+        AKInterface.shared!.setupMouseButton(left: false, right: true, {id, loc, pressed in
             self.mouseAdapter.handleOtherButton(id: id, pressed: pressed)
         })
 
@@ -98,7 +98,7 @@ public class ControlMode: Equatable {
         var consumed = true
         var movement: CGVector = CGVector()
 
-        AKInterface.shared!.setupMouseMoved({deltaX, deltaY in
+        AKInterface.shared!.setupMouseMoved({id, loc, deltaX, deltaY in
             // limit move frequency
             let now = DispatchTime.now()
             movement.dy += deltaY
@@ -108,7 +108,7 @@ public class ControlMode: Equatable {
             }
 
             lastMoveWhen = now
-            consumed = self.mouseAdapter.handleMove(deltaX: movement.dx, deltaY: movement.dy)
+            consumed = self.mouseAdapter.handleMove(id: id, loc: loc, deltaX: movement.dx, deltaY: movement.dy)
             movement.dy = 0
             movement.dx = 0
             return consumed

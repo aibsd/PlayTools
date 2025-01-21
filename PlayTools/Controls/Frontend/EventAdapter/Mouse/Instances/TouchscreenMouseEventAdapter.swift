@@ -11,9 +11,41 @@ import Foundation
 
 public class TouchscreenMouseEventAdapter: MouseEventAdapter {
 
-    static public func cursorPos() -> CGPoint? {
+
+    static public func cursorPosOld() -> CGPoint? {
         // IMPROVE: this is expensive (maybe?)
         var point = AKInterface.shared!.mousePoint
+        let rect = AKInterface.shared!.windowFrame
+        if rect.width < 1 || rect.height < 1 {
+            return nil
+        }
+        let viewRect: CGRect = screen.screenRect
+        let widthRate = viewRect.width / rect.width
+        var rate = viewRect.height / rect.height
+        if widthRate > rate {
+            // Keep aspect ratio
+            rate = widthRate
+        }
+        if screen.fullscreen {
+            // Vertically in center
+            point.y -= (rect.height - viewRect.height / rate)/2
+        }
+        point.y *= rate
+        point.y = viewRect.height - point.y
+        // For traffic light buttons when not fullscreen
+        if point.y < 0 {
+            return nil
+        }
+        // Horizontally in center
+        point.x -= (rect.width - viewRect.width / rate)/2
+        point.x *= rate
+        return point
+    }
+    
+    static public func cursorPos(loc: CGPoint) -> CGPoint? {
+        // IMPROVE: this is expensive (maybe?)
+//        var point = AKInterface.shared!.mousePoint
+        var point = loc
         let rect = AKInterface.shared!.windowFrame
         if rect.width < 1 || rect.height < 1 {
             return nil
@@ -48,7 +80,10 @@ public class TouchscreenMouseEventAdapter: MouseEventAdapter {
         return false
     }
 
-    public func handleMove(deltaX: CGFloat, deltaY: CGFloat) -> Bool {
+    public func handleMove(id: Int, loc: CGPoint, deltaX: CGFloat, deltaY: CGFloat) -> Bool {
+//        print("---- handleMove begin ----")
+//        Toast.showHint(title: "---- handleMove ----")
+//        print("---- handleMove end ----")
         if ActionDispatcher.getDispatchPriority(key: KeyCodeNames.mouseMove) == .DRAGGABLE {
             // condition meets when draggable button pressed
             return ActionDispatcher.dispatch(key: KeyCodeNames.mouseMove, valueX: deltaX, valueY: -deltaY)
@@ -59,17 +94,26 @@ public class TouchscreenMouseEventAdapter: MouseEventAdapter {
             // draggable direction pad: move handler
             // default button: lift handler
             // kinda hacky but.. IT WORKS!
-            guard let pos = TouchscreenMouseEventAdapter.cursorPos() else { return false }
+            guard let pos = TouchscreenMouseEventAdapter.cursorPos(loc: loc) else { return false }
             return ActionDispatcher.dispatch(key: KeyCodeNames.fakeMouse, valueX: pos.x, valueY: pos.y)
 
         }
         return false
     }
 
-    public func handleLeftButton(pressed: Bool) -> Bool {
+
+    public func handleLeftButton(id:Int, loc: CGPoint, pressed: Bool) -> Bool {
         // It is necessary to calculate pos before pushing to dispatch queue
         // Otherwise, we don't know whether to return false or true
-        guard let pos = TouchscreenMouseEventAdapter.cursorPos() else { return false }
+        guard let pos = TouchscreenMouseEventAdapter.cursorPos(loc: loc) else { return false }
+        
+//        print("---- handleLeftButton begin ----")
+//        Toast.showHint(title: "---- handleLeftButton \(pos) ----")
+//        print("---- handleLeftButton mousePoint: \(AKInterface.shared!.mousePoint)")
+//        print("---- handleLeftButton old_pos: \(old_pos)")
+//        print("---- handleLeftButton TARGET pos: \(pos)")
+//        print("---- handleLeftButton end ----")
+               
         if pressed {
             return ActionDispatcher.dispatch(key: KeyCodeNames.fakeMouse, valueX: pos.x, valueY: pos.y)
         } else {

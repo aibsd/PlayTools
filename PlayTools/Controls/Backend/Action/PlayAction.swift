@@ -319,7 +319,8 @@ class CameraAction: Action {
     }
 
     static func dragUpdated(_ deltaX: CGFloat, _ deltaY: CGFloat) {
-        swipeDrag.move(from: TouchscreenMouseEventAdapter.cursorPos, deltaX: deltaX * 4, deltaY: -deltaY * 4)
+        let pos = TouchscreenMouseEventAdapter.cursorPosOld
+        swipeDrag.move(from: pos, deltaX: deltaX * 4, deltaY: -deltaY * 4)
     }
 
     func invalidate() {

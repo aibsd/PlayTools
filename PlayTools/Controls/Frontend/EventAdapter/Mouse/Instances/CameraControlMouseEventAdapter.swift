@@ -17,14 +17,14 @@ public class CameraControlMouseEventAdapter: MouseEventAdapter {
         return true
     }
 
-    public func handleMove(deltaX: CGFloat, deltaY: CGFloat) -> Bool {
+    public func handleMove(id: Int, loc: CGPoint, deltaX: CGFloat, deltaY: CGFloat) -> Bool {
         let sensy = CGFloat(PlaySettings.shared.sensitivity * 0.6)
         let cgDx = deltaX * sensy,
             cgDy = -deltaY * sensy
         return ActionDispatcher.dispatch(key: KeyCodeNames.mouseMove, valueX: cgDx, valueY: cgDy)
     }
 
-    public func handleLeftButton(pressed: Bool) -> Bool {
+    public func handleLeftButton(id: Int, loc: CGPoint, pressed: Bool) -> Bool {
         ActionDispatcher.dispatch(key: KeyCodeNames.leftMouseButton, pressed: pressed)
     }
 
