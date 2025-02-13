@@ -15,9 +15,12 @@ echo "Copying to PlayCover"
 rm -r "/Applications/PlayCover.app/Contents/Frameworks/PlayTools.framework"
 cp -r "$BUILD_PATH/PlayTools.framework" "/Applications/PlayCover.app/Contents/Frameworks/"
 
-rm -rf ~/Library/Containers/io.playcover.PlayCover/Applications/com.miHoYo.Yuanshen.app/PlugIns/AKInterface.bundle
-rm -rf ~/Library/Containers/io.playcover.PlayCover/Applications/com.miHoYo.Yuanshen.app/zh-Hans.lproj
-rm -rf ~/Library/Containers/io.playcover.PlayCover/Applications/com.miHoYo.Yuanshen.app/en.lproj
+# target_bundle_id=com.miHoYo.Yuanshen.app
+target_bundle_id=com.aibsd.TestGame.app
 
-cp -r $BUILD_PATH/PlayTools.framework/PlugIns/AKInterface.bundle ~/Library/Containers/io.playcover.PlayCover/Applications/com.miHoYo.Yuanshen.app/PlugIns
-cp -r $BUILD_PATH/PlayTools.framework/*.lproj ~/Library/Containers/io.playcover.PlayCover/Applications/com.miHoYo.Yuanshen.app/
+rm -rf ~/Library/Containers/io.playcover.PlayCover/Applications/$target_bundle_id/PlugIns/AKInterface.bundle
+rm -rf ~/Library/Containers/io.playcover.PlayCover/Applications/$target_bundle_id/zh-Hans.lproj
+rm -rf ~/Library/Containers/io.playcover.PlayCover/Applications/$target_bundle_id/en.lproj
+
+cp -r $BUILD_PATH/PlayTools.framework/PlugIns/AKInterface.bundle ~/Library/Containers/io.playcover.PlayCover/Applications/$target_bundle_id/PlugIns
+cp -r $BUILD_PATH/PlayTools.framework/*.lproj ~/Library/Containers/io.playcover.PlayCover/Applications/$target_bundle_id/
