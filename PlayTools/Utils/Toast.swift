@@ -127,11 +127,11 @@ class Toast {
         }
         var token2: NSObjectProtocol?
         let center = NotificationCenter.default
-        token2 = center.addObserver(forName: NSNotification.Name.playtoolsCursorWillShow,
-                                    object: nil, queue: OperationQueue.main) { _ in
-            center.removeObserver(token2!)
-            UserDefaults.standard.set(thisUse, forKey: persistenceKeyname)
-        }
+//        token2 = center.addObserver(forName: NSNotification.Name.playtoolsCursorWillShow,
+//                                    object: nil, queue: OperationQueue.main) { _ in
+//            center.removeObserver(token2!)
+//            UserDefaults.standard.set(thisUse, forKey: persistenceKeyname)
+//        }
         return lastUse
     }
 
@@ -140,36 +140,36 @@ class Toast {
         if lastUse > Float(Date.now.addingTimeInterval(-86400*14).timeIntervalSinceReferenceDate) {
             return
         }
-        Toast.showHint(title: NSLocalizedString("hint.mouseMapping.title",
-                                                tableName: "Playtools",
-                                                value: "Mouse mapping disabled", comment: ""),
-                       text: [NSLocalizedString("hint.mouseMapping.content.before",
-                                                tableName: "Playtools",
-                                                value: "Press", comment: ""),
-                              " option ⌥ ",
-                              NSLocalizedString("hint.mouseMapping.content.after",
-                                                tableName: "Playtools",
-                                                value: "to enable mouse mapping", comment: "")],
-                       timeout: 10,
-                       notification: NSNotification.Name.playtoolsCursorWillHide)
-        let center = NotificationCenter.default
-        var token: NSObjectProtocol?
-        token = center.addObserver(forName: NSNotification.Name.playtoolsCursorWillHide,
-                                   object: nil, queue: OperationQueue.main) { _ in
-            center.removeObserver(token!)
-            Toast.showHint(title: NSLocalizedString("hint.showCursor.title",
-                                                    tableName: "Playtools",
-                                                    value: "Cursor locked", comment: ""),
-                           text: [NSLocalizedString("hint.showCursor.content.before",
-                                                    tableName: "Playtools",
-                                                    value: "Press", comment: ""),
-                                  " option ⌥ ",
-                                  NSLocalizedString("hint.showCursor.content.after",
-                                                    tableName: "Playtools",
-                                                    value: "to unlock cursor", comment: "")],
-                           timeout: 10,
-                           notification: NSNotification.Name.playtoolsCursorWillShow)
-        }
+//        Toast.showHint(title: NSLocalizedString("hint.mouseMapping.title",
+//                                                tableName: "Playtools",
+//                                                value: "Mouse mapping disabled", comment: ""),
+//                       text: [NSLocalizedString("hint.mouseMapping.content.before",
+//                                                tableName: "Playtools",
+//                                                value: "Press", comment: ""),
+//                              " option ⌥ ",
+//                              NSLocalizedString("hint.mouseMapping.content.after",
+//                                                tableName: "Playtools",
+//                                                value: "to enable mouse mapping", comment: "")],
+//                       timeout: 10,
+//                       notification: NSNotification.Name.playtoolsCursorWillHide)
+//        let center = NotificationCenter.default
+//        var token: NSObjectProtocol?
+//        token = center.addObserver(forName: NSNotification.Name.playtoolsCursorWillHide,
+//                                   object: nil, queue: OperationQueue.main) { _ in
+//            center.removeObserver(token!)
+//            Toast.showHint(title: NSLocalizedString("hint.showCursor.title",
+//                                                    tableName: "Playtools",
+//                                                    value: "Cursor locked", comment: ""),
+//                           text: [NSLocalizedString("hint.showCursor.content.before",
+//                                                    tableName: "Playtools",
+//                                                    value: "Press", comment: ""),
+//                                  " option ⌥ ",
+//                                  NSLocalizedString("hint.showCursor.content.after",
+//                                                    tableName: "Playtools",
+//                                                    value: "to unlock cursor", comment: "")],
+//                           timeout: 10,
+//                           notification: NSNotification.Name.playtoolsCursorWillShow)
+//        }
     }
 
     // swiftlint:disable:next function_body_length

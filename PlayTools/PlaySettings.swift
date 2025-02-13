@@ -23,7 +23,7 @@ let settings = PlaySettings.shared
         }
     }
 
-    lazy var discordActivity = settingsData.discordActivity
+//    lazy var discordActivity = settingsData.discordActivity
 
     lazy var keymapping = settingsData.keymapping
 
@@ -96,7 +96,7 @@ struct AppSettingsData: Codable {
     var aspectRatio = 1
     var notch = false
     var bypass = false
-    var discordActivity = DiscordActivity()
+//    var discordActivity = DiscordActivity()
     var version = "2.0.0"
     var playChain = false
     var playChainDebugging = false

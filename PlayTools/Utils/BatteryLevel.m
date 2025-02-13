@@ -55,16 +55,16 @@ __attribute__((visibility("hidden")))
     return 1.0;
 }
 
-- (UIDeviceBatteryState) pm_return_fullCharging {
-    return UIDeviceBatteryStateFull;
-}
+//- (UIDeviceBatteryState) pm_return_fullCharging {
+//    return UIDeviceBatteryStateFull;
+//}
 @end
 
-@implementation BatteryLevelLoader
-+ (void)load {
-    [[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
-    [objc_getClass("UIDevice") swizzleInstanceMethod:@selector(isBatteryMonitoringEnabled) withMethod:@selector(pm_return_true)];
-    [objc_getClass("UIDevice") swizzleInstanceMethod:@selector(batteryState) withMethod:@selector(pm_return_fullCharging)];
-    [objc_getClass("UIDevice") swizzleInstanceMethod:@selector(batteryLevel) withMethod:@selector(pm_return_battery_full)];
-}
-@end
+//@implementation BatteryLevelLoader
+//+ (void)load {
+//    [[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
+//    [objc_getClass("UIDevice") swizzleInstanceMethod:@selector(isBatteryMonitoringEnabled) withMethod:@selector(pm_return_true)];
+//    [objc_getClass("UIDevice") swizzleInstanceMethod:@selector(batteryState) withMethod:@selector(pm_return_fullCharging)];
+//    [objc_getClass("UIDevice") swizzleInstanceMethod:@selector(batteryLevel) withMethod:@selector(pm_return_battery_full)];
+//}
+//@end
