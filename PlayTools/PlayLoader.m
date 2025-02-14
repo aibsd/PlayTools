@@ -162,11 +162,11 @@ static int pt_unlink(char const* path) {
     return unlink(ue4_fix_filename(path));
 }
 
-DYLD_INTERPOSE(pt_open, open)
+//DYLD_INTERPOSE(pt_open, open)
 //DYLD_INTERPOSE(pt_stat, stat)
-DYLD_INTERPOSE(pt_access, access)
-DYLD_INTERPOSE(pt_rename, rename)
-DYLD_INTERPOSE(pt_unlink, unlink)
+//DYLD_INTERPOSE(pt_access, access)
+//DYLD_INTERPOSE(pt_rename, rename)
+//DYLD_INTERPOSE(pt_unlink, unlink)
 
 @implementation PlayLoader
 
